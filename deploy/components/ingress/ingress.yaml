@@ -1,0 +1,26 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  annotations:
+    cert-manager.io/cluster-issuer: letsencrypt
+  creationTimestamp: null
+  name: new-backend-service-ingress
+spec:
+  ingressClassName: nginx
+  rules:
+  - host: new-backend-service.cluster.koalaops.com
+    http:
+      paths:
+      - backend:
+          service:
+            name: new-backend-service-service
+            port:
+              number: 80
+        path: /
+        pathType: Prefix
+  tls:
+  - hosts:
+    - new-backend-service.cluster.koalaops.com
+    secretName: new-backend-service-tls-cert
+status:
+  loadBalancer: {}
